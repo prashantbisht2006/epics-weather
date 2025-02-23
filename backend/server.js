@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
-const fetch = require("node-fetch");
+const axios = require("axios")
 const app = express();
-const port = 1000;
+const PORT = 1000;
+const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 app.get("/weather",async(req,res)=>{
@@ -11,11 +12,12 @@ app.get("/weather",async(req,res)=>{
         return res.status(400).json({error:"Provide an appropriate city"})
     }
     try{
-        const apikey=process.env.api-key;  
-        const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=yes`;
+        const apikey=process.env.api_key;  
+        const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apikey}&q=${city}&aqi=yes`;
         
-        const responce = await fetch(apiurl);
-        const data = await response.json();
+        const response = await axios.get(apiUrl);
+        const data = response.data;
+
         
         res.json(data)
     }
@@ -25,5 +27,5 @@ app.get("/weather",async(req,res)=>{
     }
 });
 app.listen(PORT, () => {
-    console.log(`My Server is running on http://localhost:${port}`);
+    console.log(`My Server is running on http://localhost:${PORT}`);
 });
